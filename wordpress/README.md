@@ -5,7 +5,7 @@ This tutorial combines both the use of Helm charts as well as working with our o
 
 ## Getting "a kube"
 We need a local Kubernetes cluster to test on! I am personally a fan of [kind](https://kind.sigs.k8s.io/docs/user/quick-start/) as it works fast and is lightweight.
-However on Windows systems without WSL [minikube](https://kind.sigs.k8s.io/docs/user/quick-start/) might also be a good option.
+However on Windows systems without WSL [minikube](https://minikube.sigs.k8s.io/docs/start/) might also be a good option.
 
 We also need [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and [Helm](https://helm.sh/docs/intro/quickstart/) installed!
 
