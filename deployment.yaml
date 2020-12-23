@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: hello-world
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: nginx
+          image: nginxdemos/hello
+          ports:
+            - containerPort: 80
+              name: http

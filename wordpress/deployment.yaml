@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:
+  selector: # the selector is for the deployment to know which pod's it owns, make sure to keep labels the same everywhere
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - image: wordpress:apache # we pull wordpress from hub.docker.com, `apache` is our tag meaning we pull that specific version, for WP this means the latest version with apache server built in
+        imagePullPolicy: Always # this will alwatch check for a newer image when a pod stars, you can also set it to IfNotPresent so it only downloads it if not on disk already
+        name: wordpress # name of the container, only used for you to know what is running
+        env: # set environment variables 
+        - name: WORDPRESS_DB_HOST # equivalent to `export WORDPRESS_DB_HOST=wp-mysql`
+          value: wp-mysql # this is our service name from before! Kubernetes will automatically set up internal DNS to resolve service names to cluster IPs
+        - name: WORDPRESS_DB_USER
+          value: wp
+        - name: WORDPRESS_DB_NAME
+          value: wp
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom: # we can specify values by hand as above, or get them from secrets!
+            secretKeyRef:
+              name: wp-mysql
+              key: mysql-password
+        ports:  
+        - containerPort: 80 # this gives the port 80 the name wordpress, it does not expose it to the outside world yet
+          name: wordpress
+        volumeMounts: #this part tells to mount the `wp-persistent-storage` to `/var/www/html`
+        - name: wp-persistent-storage
+          mountPath: "/var/www/html"
+      volumes:
+      - name: wp-persistent-storage # this is the actual definition of the `wp-persistent-storage` volume to tell it which PVC to use
+        persistentVolumeClaim:
+          claimName: wp-persistent-storage

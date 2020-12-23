@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wp-persistent-storage # the name of our PVC
+spec:
+  accessModes:
+    - ReadWriteOnce # This tells how many users can read/write or if it needs to be read only
+  resources:
+    requests:
+      storage: 6Gi # how much storage we want
